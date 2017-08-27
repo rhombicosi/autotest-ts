@@ -2,18 +2,14 @@ import { browser } from 'protractor';
 
 import { WorkspacePage } from '../pages/workspace/workspace.po';
 
-describe('Default Workspace', function() {
+describe('Default Workspace', () => {
   let workspace: WorkspacePage;
 
   beforeAll(() => {
     workspace = new WorkspacePage();
-    browser.driver.get('http://localhost:4200/');
-    browser.ignoreSynchronization = true;
-    //browser.waitForAngularEnabled(false);
   });
 
   it('should contain Default workspace', () => {
-    browser.sleep(3000);
     expect(workspace.getName(workspace.defaultworkspace)).toEqual('Default workspace');
   });
 
@@ -37,13 +33,12 @@ describe('Default Workspace', function() {
     workspace.openComponentList();
 
     expect(workspace.getComponents())
-    .toEqual(['Watchlist', 'Chart', 'News feed', 'Open positions', 'Active orders', 'Economic calendar', 'Trade history', 'Order history']);
+      .toEqual(['Watchlist', 'Chart', 'News feed', 'Open positions', 'Active orders', 'Economic calendar', 'Trade history', 'Order history']);
   });
 
   it('should add all components', () => {
     workspace.componentListItem.each((element) => {
-        element.click();
-        browser.sleep(1000);
+      element.click();
     });
 
     expect(workspace.countItem.count()).toEqual(8);
@@ -51,8 +46,6 @@ describe('Default Workspace', function() {
 
   it('should clear workspace', () => {
     workspace.clearWorkspace();
-    browser.get('/workspaces/default');
-    browser.sleep(7000);
     expect(workspace.workspaceComponent.count()).toEqual(0);
   });
 });

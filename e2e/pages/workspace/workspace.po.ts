@@ -1,16 +1,17 @@
-import { browser, element, $, $$, by } from 'protractor';
+import { browser, protractor, element, $, $$, by } from 'protractor';
 
 
 export class WorkspacePage {
-  private workspacename = $$('.workspace-name');
-  private panelcontainer = $('.panel-container');
-  workspaceitem = $$('.workspace__item');
+  workspaceMyLink = $('[routerlink="/workspaces"]');
+  workspaceNames = $$('.workspace-name');
+  panelContainer = $('.panel-container');
+  workspaceitems = $$('.workspace__item');
   activeworkspace = $('.workspace__item--active');
-  defaultworkspace = this.workspacename.first();
-  newworkspace = this.workspacename.last();
-  watchlist = this.panelcontainer.element(by.cssContainingText('.workspace-item--header-item', 'Watchlist Component'));
-  news = this.panelcontainer.element(by.cssContainingText('.workspace-item--header-item', 'News Component'));
-  openpositions = this.panelcontainer.element(by.cssContainingText('.workspace-item--header-item', 'Open Positions List'));
+  defaultworkspace = this.workspaceNames.first();
+  newworkspace = this.workspaceNames.last();
+  watchlist = this.panelContainer.element(by.cssContainingText('.workspace-item--header-item', 'Watchlist Component'));
+  news = this.panelContainer.element(by.cssContainingText('.workspace-item--header-item', 'News Component'));
+  openpositions = this.panelContainer.element(by.cssContainingText('.workspace-item--header-item', 'Open Positions List'));
   workspaceComponent = $$('.workspace-item--header-item');
   closeIcon = this.activeworkspace.$('.icon-close');
   dropdownIcon = this.activeworkspace.$('.icon-chevron');
@@ -37,7 +38,7 @@ export class WorkspacePage {
   }
 
   openWorkspace(item) {
-    return this.workspaceitem.get(item);
+    return this.workspaceitems.get(item);
   }
 
   openComponentList() {
@@ -55,10 +56,14 @@ export class WorkspacePage {
   editName(item) {
     item.count().then((cnt) => {
       let p = Math.floor(Math.random() * cnt + 1);
-      this.workspaceitem.get(p).click().then(() => {
-        browser.sleep(5000);
+      this.workspaceitems.get(p).click().then(() => {
+        let ec = protractor.ExpectedConditions;
+        let e = this.workspaceitems.get(p);
+        browser.wait(ec.visibilityOf(e), 15000);
         this.dropdownIcon.click().then(() => {
-          browser.sleep(5000);
+          let ec = protractor.ExpectedConditions;
+          let e = this.editIcon;
+          browser.wait(ec.visibilityOf(e), 15000);
           return this.editIcon.click();
         });
       });

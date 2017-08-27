@@ -7,8 +7,9 @@ export class LoginPage {
   private submit = element(by.id('login-submit'));
 
   navigateTo() {
-    return browser.get('/login');
-    //return browser.driver.get('https://trade-qat.loginandtrade.com/webtrader');
+    //return browser.get('/login');
+    //return browser.get(browser.baseUrl);
+    return browser.get('https://trade-qat.loginandtrade.com/webtrader/');
   }
 
   signIn(login: string, password: string) {

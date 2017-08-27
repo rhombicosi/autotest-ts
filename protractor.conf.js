@@ -4,22 +4,24 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
 exports.config = {
+  seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
+  baseUrl: 'https://trade-qat.loginandtrade.com/webtrader/',  
+  capabilities: {
+    'browserName': 'chrome'
+  },
+  framework: 'jasmine',
+  //useBlockingProxy: true,
+  //highlightDelay: 1000,
   allScriptsTimeout: 11000,
   specs: [
     './e2e/**/*.e2e-spec.ts'
   ],
-  capabilities: {
-    'browserName': 'chrome'
-  },
-  directConnect: true,
-  baseUrl: 'http://localhost:4200/',
-  framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
-    print: function() {}
+    defaultTimeoutInterval: 30000
   },
   onPrepare() {
+    browser.waitForAngularEnabled(false);
     require('ts-node').register({
       project: 'tsconfig.json'
     });

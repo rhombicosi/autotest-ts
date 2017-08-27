@@ -3,7 +3,7 @@ import { browser, protractor, element, by } from 'protractor';
 import { WorkspacePage } from '../pages/workspace/workspace.po';
 import { Utils } from '../utils/utils';
 
-describe('New Workspace', function() {
+describe('New Workspace', () => {
   let workspace: WorkspacePage;
   let utils: Utils;
   let wsName;
@@ -12,32 +12,31 @@ describe('New Workspace', function() {
     workspace = new WorkspacePage();
     utils = new Utils();
     wsName = utils.getRandomName('workspace');
-    //browser.get('/workspaces/default');
-    browser.ignoreSynchronization = true;
-    //browser.waitForAngularEnabled(false);
   });
 
   it('should create New workspace', () => {
-    browser.sleep(5000);
+    let ec = protractor.ExpectedConditions;
+    let e = workspace.newworkspace;
     workspace.createNewWorkspace();
-    browser.sleep(5000);
+    browser.wait(ec.visibilityOf(e), 15000);
     expect(workspace.getName(workspace.newworkspace)).toEqual('New workspace 2');
   });
 
   it('should add all components', () => {
     workspace.openComponentList();
     workspace.componentListItem.each((element) => {
-        element.click();
-        browser.sleep(1000);
+      element.click();
+      browser.sleep(1000);
     });
 
     expect(workspace.countItem.count()).toEqual(8);
   });
 
   it('should clear workspace', () => {
+    let ec = protractor.ExpectedConditions;
+    let e = workspace.clearWorkspaceButton;
     workspace.clearWorkspace();
-    browser.get('/workspaces/default');
-    browser.sleep(7000);
+    browser.wait(ec.invisibilityOf(e), 15000);
     expect(workspace.workspaceComponent.count()).toEqual(0);
   });
 
@@ -46,13 +45,14 @@ describe('New Workspace', function() {
       workspace.createNewWorkspace();
     }
 
-    browser.sleep(7000);
     expect(workspace.plusIcon.isPresent()).toBe(false);
   });
 
   it('should edit workspace name', () => {
-    workspace.editName(workspace.workspaceitem);
-    browser.sleep(5000);
+    let ec = protractor.ExpectedConditions;
+    let e = workspace.editInput;
+    workspace.editName(workspace.workspaceitems);
+    browser.wait(ec.visibilityOf(e), 15000);
     expect(workspace.editInput.isEnabled()).toBe(true);
     workspace.editInput.clear();
     workspace.editInput.sendKeys(wsName);
@@ -61,8 +61,12 @@ describe('New Workspace', function() {
   });
 
   it('should close workspace', () => {
+    let ec = protractor.ExpectedConditions;
+    let e = element(by.cssContainingText('.workspace-name', wsName));
+    browser.wait(ec.visibilityOf(e), 15000);
     workspace.closeWorkspace();
     browser.sleep(5000);
-    expect(element(by.cssContainingText('.workspace-name', wsName)).isPresent()).toBe(false);
+    browser.wait(ec.invisibilityOf(e), 15000);
+    expect(e.isPresent()).toBe(false);
   });
 });
