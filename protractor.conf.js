@@ -10,8 +10,6 @@ exports.config = {
     'browserName': 'chrome'
   },
   framework: 'jasmine',
-  //useBlockingProxy: true,
-  //highlightDelay: 1000,
   allScriptsTimeout: 11000,
   specs: [
     './e2e/**/*.e2e-spec.ts'
