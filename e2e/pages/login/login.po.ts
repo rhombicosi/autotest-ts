@@ -1,16 +1,17 @@
-import { browser, element, by } from 'protractor';
+import { browser, $ } from 'protractor';
+import { promise } from 'selenium-webdriver';
 
 
 export class LoginPage {
-  private username = element(by.id('login-username'));
-  private password = element(by.id('login-password'));
-  private submit = element(by.id('login-submit'));
+  private username = $('#login-username');
+  private password = $('#login-password');
+  private submit = $('#login-submit');
 
-  navigateTo() {
+  navigateTo(): promise.Promise<any> {
     return browser.get(browser.baseUrl);
   }
 
-  signIn(login: string, password: string) {
+  signIn(login: string, password: string): promise.Promise<void> {
     this.username.sendKeys(login);
     this.password.sendKeys(password);
 

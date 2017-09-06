@@ -1,12 +1,21 @@
 import * as _ from 'lodash';
 
-export class Utils {
-   private randomVal;
-   private name;
-
-   getRandomName (item) {
-    this.randomVal = _.sampleSize('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10).join('');
-    this.name = 'New ' + item + ' ' + this.randomVal;
-    return this.name;
+/**
+ * Generate random 10 char string
+ */
+export function getRandomString(): string {
+    let string = '';
+  
+   while (string.length !== 10) {
+      // string = _.sampleSize(Math.random().toString(36).slice(2), 10).join('');
+      string = Math.random().toString(32).slice(2);
    }
-}
+  
+    return string;
+  }
+  
+  
+  export function getRandomName(): string {
+    return _.sampleSize('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10).join('');
+  }
+  

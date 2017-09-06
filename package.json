@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "e2e": "protractor ./protractor.conf.js --highlightDelay 1000 --seleniumAddress http://localhost:4444/wd/hub",
+    // "e2e": "protractor ./protractor.conf.js --highlightDelay 1000 --seleniumAddress http://localhost:4444/wd/hub",
     "update": "webdriver-manager update",
     "proxy": "webdriver-manager start",
     "start": "npm run update && npm run proxy"

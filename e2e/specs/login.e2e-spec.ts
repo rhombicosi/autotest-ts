@@ -1,25 +1,28 @@
-import { browser, protractor, $ } from 'protractor';
+import { browser, protractor } from 'protractor';
 
 import { LoginPage } from '../pages/login/login.po';
-import { WorkspacePage } from '../pages/workspace/workspace.po';
-import { loginPageData } from '../data.example';
+import { WorkspacePage } from '../pages/workspaces/workspace.po';
+
+import { loginPageData } from '../data';
+
 
 describe('Login page', () => {
   let page: LoginPage;
   let workspace: WorkspacePage;
 
-  beforeAll(() => {
+  beforeEach(() => {
     page = new LoginPage();
     workspace = new WorkspacePage();
-    browser.get(browser.baseUrl);
+    page.navigateTo();
   });
 
   it('should sign in', () => {
-    let ec = protractor.ExpectedConditions;
-    let e = workspace.workspaceMyLink;
+    let expectedConditions = protractor.ExpectedConditions;
+    let element = workspace.getMyWorkspacesLinkElement();
 
     page.signIn(loginPageData.login, loginPageData.password);
-    browser.wait(ec.visibilityOf(e), 15000);
-    expect(browser.driver.getCurrentUrl()).toContain('workspaces/default');
+    browser.wait(expectedConditions.visibilityOf(element));
+
+    expect(browser.getCurrentUrl()).toContain('workspaces');
   });
 });

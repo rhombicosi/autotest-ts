@@ -2,6 +2,7 @@
 /dist
 /tmp
 /out-tsc
+/out-tsc-e2e
 
 # dependencies
 /node_modules
