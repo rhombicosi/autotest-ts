@@ -9,7 +9,10 @@ exports.config = {
     './e2e/**/*.e2e-spec.ts'
   ],  
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    chromeOptions: {
+      args: [ "--headless", "--disable-gpu", "--window-size=1024x780" ]
+    }
   },
   directConnect: true,
   seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
