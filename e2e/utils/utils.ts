@@ -12,8 +12,7 @@ export function getRandomString(): string {
    }
   
     return string;
-  }
-  
+  }  
   
   export function getRandomName(): string {
     return _.sampleSize('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10).join('');

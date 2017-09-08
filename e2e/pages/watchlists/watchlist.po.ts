@@ -10,7 +10,11 @@ export class WatchlistPage {
 
     private chevronRightIcons = $$('.icon-chevron-right');
     private chevronDownIcons = $$('.icon-chevron-down');
-    private trashIcon = $$('.icon-trash-can');    
+    private trashIcon = $$('.icon-trash-can');
+
+    private addWatchlistLink = $('.add-watchlist__link'); 
+    private watchlistNameInput = $('.add-watchlist__input').$('input[text = "text"]');
+    private clearSearchButton = $('.clear-search');
     
     private marketName = $('.market-name');
 
@@ -18,7 +22,11 @@ export class WatchlistPage {
         return this.watchlistTitles.getText();
     }
 
+    getWatchlistId(): promise.Promise<string> {
+        return $('.watchlist-markets-container--list').getAttribute('watchlistid');        
+    }
+
     getMarketById(marketId: string): ElementFinder {
         return $(`[marketid=${marketId}]`);
-    }
+    }    
 }

@@ -3,16 +3,16 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    // "e2e": "protractor ./protractor.conf.js --highlightDelay 1000 --seleniumAddress http://localhost:4444/wd/hub",
-    "update": "webdriver-manager update",
-    "proxy": "webdriver-manager start",
-    "start": "npm run update && npm run proxy"
+    "ng": "./node_modules/@angular/cli/bin/ng",
+    "e2e-compile": "tsc -p e2e",
+    "e2e": "ng e2e"
   },
-  "dependencies": {    
+  "dependencies": {
     "lodash": "^4.17.4",
     "rxjs": "^5.4.2"
   },
   "devDependencies": {
+    "@angular/cli": "^1.4.0",
     "@angular/language-service": "4.3.3",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
