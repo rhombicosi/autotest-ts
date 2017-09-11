@@ -6,8 +6,10 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './e2e/**/*.e2e-spec.ts'
-  ],  
+    //'./e2e/**/*.e2e-spec.ts'
+    './e2e/**/login.e2e-spec.ts',
+    './e2e/**/watchlist.e2e-spec.ts'
+  ],
   capabilities: {
     'browserName': 'chrome',
     // chromeOptions: {
@@ -16,12 +18,12 @@ exports.config = {
   },
   directConnect: true,
   seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
-  baseUrl: 'https://trade.loginandtrade.com/webtrader/',  
-  framework: 'jasmine',  
+  baseUrl: 'https://trade.loginandtrade.com/webtrader/',
+  framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,    
-    print: function() {}
+    defaultTimeoutInterval: 30000,
+    print: function () { }
   },
   onPrepare() {
     browser.waitForAngularEnabled(false);

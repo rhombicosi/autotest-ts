@@ -136,6 +136,14 @@ export class WorkspacePage {
     return element(by.cssContainingText('.workspace-name', name));
   }
 
+  getComponentListItemByTitle(title: string): ElementFinder {
+    return $(`span[title = ${title}]`);
+  }
+
+  addComponent(component: ElementFinder): promise.Promise<void> {
+    return component.click();
+  }
+
   closeAllWorkspaces(): void {
     this.closeIcons.each((element) => {
       element.click();

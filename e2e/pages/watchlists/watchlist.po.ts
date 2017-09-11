@@ -13,20 +13,35 @@ export class WatchlistPage {
     private trashIcon = $$('.icon-trash-can');
 
     private addWatchlistLink = $('.add-watchlist__link'); 
-    private watchlistNameInput = $('.add-watchlist__input').$('input[text = "text"]');
+    private watchlistNameInput = $('.add-watchlist__input').$('input[type = "text"]');
     private clearSearchButton = $('.clear-search');
     
     private marketName = $('.market-name');
+    private marketNameInput = $('.add-market--search-container').$('input[type = "text"]');
+
+    // Elements
+    getWatchlistsElement(): ElementFinder {
+        return element(by.cssContainingText('.workspace-item--header-item','Watchlists'));
+    }
 
     getWatchlistTitles(): promise.Promise<string> {
         return this.watchlistTitles.getText();
     }
 
-    getWatchlistId(): promise.Promise<string> {
-        return $('.watchlist-markets-container--list').getAttribute('watchlistid');        
+    getWatchlistIds(): promise.Promise<string> {
+        return $$('.watchlist-markets-container--list').getAttribute('watchlistid');        
     }
 
     getMarketById(marketId: string): ElementFinder {
-        return $(`[marketid=${marketId}]`);
-    }    
+        return $(`.[marketid=${marketId}]`);
+    }
+    
+    getMarketNameInput(watchlistId: promise.Promise<string>): ElementFinder {
+        let marketNameInputeLocator: ElementFinder;
+        watchlistId.then((id) => { 
+            marketNameInputeLocator = $(`.div[watchlistid = ${id}]`).marketNameInput;
+        });
+
+        return marketNameInputeLocator;
+    }
 }
