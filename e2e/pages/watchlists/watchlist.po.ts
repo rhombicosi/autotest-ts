@@ -1,4 +1,4 @@
-import { browser, element, $, $$, by, ElementFinder, ElementArrayFinder } from 'protractor';
+import { browser, element, $, $$, by, ElementFinder, ElementArrayFinder, protractor } from 'protractor';
 import { promise } from 'selenium-webdriver';
 
 
@@ -7,6 +7,7 @@ export class WatchlistPage {
     private watchlistHeader = $('.watchlists-header');
     private watchlistTitles = $$('.watchlist-header__title');
     private popularMarkets = $('.curated');
+    private popularMarketsTitle = element(by.cssContainingText('.watchlist-header__title--annotation', 'City Index Watch List'));
 
     private chevronRightIcons = $$('.icon-chevron-right');
     private chevronDownIcons = $$('.icon-chevron-down');
@@ -19,9 +20,21 @@ export class WatchlistPage {
     private marketName = $('.market-name');
     private marketNameInput = $('.add-market--search-container').$('input[type = "text"]');
 
+    private marketRename = $('.rename-watchlist');
+    private marketRenameInput = $('input[name = watchlistNewName]');
+
     // Elements
-    getWatchlistsElement(): ElementFinder {
-        return element(by.cssContainingText('.workspace-item--header-item','Watchlists'));
+    getWatchlistElement(): ElementFinder {
+        return this.watchlist;
+    }
+
+    getPopularMarketsTitleElement(): ElementFinder {
+        return this.popularMarketsTitle;
+    }
+
+    // Actions
+    getWatchlistByTitle(title: string): ElementFinder {
+        return element(by.cssContainingText('.watchlist-header__title', title));
     }
 
     getWatchlistTitles(): promise.Promise<string> {
@@ -44,4 +57,20 @@ export class WatchlistPage {
 
         return marketNameInputeLocator;
     }
+
+    createWatchlist(name: string): void {
+        this.addWatchlistLink.click().then(() => {
+            this.watchlistNameInput.sendKeys(name);
+            browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        });
+    }
+
+    renameWatchlist(currentName: string, newName: string) {
+        this.getWatchlistByTitle(currentName).click().then(() => {
+            this.marketRenameInput.clear();
+            this.marketNameInput.sendKeys(newName);
+            browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        });
+    }
+
 }
