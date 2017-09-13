@@ -5,6 +5,7 @@ import { WorkspacePage } from '../pages/workspaces/workspace.po';
 import { WatchlistPage } from '../pages/watchlists/watchlist.po';
 
 import { getRandomString, getRandomName } from '../utils/utils';
+import { hasClass } from '../helper/helper';
 
 
 describe('Watchlists', () => {
@@ -19,19 +20,29 @@ describe('Watchlists', () => {
     beforeAll(() => {
         workspace = new WorkspacePage();
         watchlist = new WatchlistPage();
+
         watchlistName = `New watchlist ${getRandomString()}`;
         watchlistNewName = `New watchlist ${getRandomString()}`;
+
         expectedConditions = protractor.ExpectedConditions;
+
+        workspace.closeAllWorkspaces();
     });
 
     it('User should be able to add Watchlists component to a workspace', () => {
-        browser.sleep(3000);
+        let defaultWorkspace = workspace.getWorkspaceDefaultElement();
+        let newWorksapce = workspace.getWorkspaceNewElement(); 
+        let workspaceInfo = workspace.getWorkspaceInfo();
+
+        browser.wait(hasClass(defaultWorkspace, 'workspace__item--active')); 
         workspace.createNewWorkspace();
-        browser.sleep(7000);
+        browser.sleep(3000);
+        // browser.wait(hasClass(newWorksapce, 'workspace__item--active')); 
         workspace.openComponentList();
         browser.sleep(3000);
-        workspace.addComponent(workspace.getComponentListItemByTitle('Watchlist'));
-        browser.sleep(3000);
+        // browser.wait(expectedConditions.visibilityOf(workspaceInfo));
+        workspace.addComponent(workspace.getComponentListItemByTitle('Watchlist'));        
+       
         expect(watchlist.getWatchlistElement().isDisplayed()).toBeTruthy();
     });
 
@@ -48,9 +59,13 @@ describe('Watchlists', () => {
     it('User should be able to rename custom watchlist', () => {
         watchlist.renameWatchlist(watchlistName, watchlistNewName);
         browser.sleep(3000);
-        expect(watchlist.getWatchlistByTitle(watchlistNewName).isDisplayed()).toBeTruthy();
+        expect(watchlist.getWatchlistByTitle(watchlistNewName).isDisplayed()).toBeTruthy();        
     });
 
-    
+    it('delete', () => {
+        browser.sleep(3000);
+        watchlist.deleteWatchlist(watchlistNewName);
+        expect(watchlist.getWatchlistByTitle(watchlistNewName).isDisplayed()).toBeFalsy();
+    });
 
 });

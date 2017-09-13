@@ -11,6 +11,7 @@ export class WorkspacePage {
 
   private componentListItems = $$('.components-list__item');
   private workspaceComponents = $$('.workspace-item--header-item');
+  private workspaceInfo = $('.workspace-info');
 
   private closeIcon = this.workspaceActive.$('.icon-close');
   private closeIcons = $$('.icon-close');
@@ -45,6 +46,10 @@ export class WorkspacePage {
 
   getCreateNewWorkspaceLinkElement(): ElementFinder {
     return $('.create-new-workspace');
+  }
+
+  getWorkspaceInfo(): ElementFinder {
+    return this.workspaceInfo;
   }
 
   getEditInputElement(): ElementFinder {

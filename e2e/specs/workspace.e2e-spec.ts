@@ -4,7 +4,7 @@ import { ProtractorExpectedConditions } from 'protractor/built/expectedCondition
 import { WorkspacePage } from '../pages/workspaces/workspace.po';
 
 import { getRandomString, getRandomName } from '../utils/utils';
-
+import { hasClass } from '../helper/helper';
 
 describe('My Workspaces', () => {
   let workspace: WorkspacePage;
@@ -29,6 +29,8 @@ describe('My Workspaces', () => {
       'Trade history',
       'Order history'
     ];
+    
+    workspace.closeAllWorkspaces();
   });
 
 //   beforeEach(() => {
@@ -36,6 +38,8 @@ describe('My Workspaces', () => {
 //   });
 
   it('should contain Default workspace', () => {
+    let defaultWorkspace = workspace.getWorkspaceDefaultElement();
+    browser.wait(hasClass(defaultWorkspace, 'workspace__item--active'));
     expect(workspace.getName(workspace.getWorkspaceDefaultElement())).toEqual('Default workspace');
   });
 
@@ -57,8 +61,10 @@ describe('My Workspaces', () => {
     });
 
     it('should contain the list of components', () => {
-      workspace.openComponentList();
+      let workspaceInfo = workspace.getWorkspaceInfo();
 
+      workspace.openComponentList();
+      browser.wait(expectedConditions.visibilityOf(workspaceInfo));
       expect(workspace.getComponentsTitles()).toEqual(componentsTitles);
     });
 
@@ -86,7 +92,10 @@ describe('My Workspaces', () => {
     });
 
     it('should add all components', () => {
+      let workspaceInfo = workspace.getWorkspaceInfo();
+      
       workspace.openComponentList();
+      browser.wait(expectedConditions.visibilityOf(workspaceInfo));
       workspace.addAllComponents();
 
       expect(workspace.countComponents()).toEqual(8);
@@ -103,13 +112,16 @@ describe('My Workspaces', () => {
 
     describe('When 10 workspaces are added', () => {
       it('plus icon should not be displayed', () => {
-        let element = protractor.element(by.cssContainingText('.workspace-name', 'New workspace 10'));
+        let lastWorkspace = element(by.cssContainingText('.workspace-name', 'New workspace 10'));
+        
 
         for (let i = 0; i < 8; i++) {
           workspace.createNewWorkspace();
         }
 
-        browser.wait(expectedConditions.visibilityOf(element));
+        // browser.wait(expectedConditions.visibilityOf(element));
+        browser.wait(expectedConditions.stalenessOf(workspace.getCreateNewWorkspaceLinkElement()));
+        browser.wait(hasClass(lastWorkspace, 'workspace__item--active'));
 
         expect(workspace.getCreateNewWorkspaceLinkElement().isPresent()).toBeFalsy();
       });
@@ -143,7 +155,6 @@ describe('My Workspaces', () => {
       browser.sleep(1000);
 
       expect(element.isPresent()).toBeFalsy();
-      workspace.closeAllWorkspaces();
     });
   });
 });

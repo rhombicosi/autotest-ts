@@ -8,6 +8,7 @@ exports.config = {
   specs: [
     //'./e2e/**/*.e2e-spec.ts'
     './e2e/**/login.e2e-spec.ts',
+    './e2e/**/workspace.e2e-spec.ts',
     './e2e/**/watchlist.e2e-spec.ts'
   ],
   capabilities: {
@@ -26,7 +27,11 @@ exports.config = {
     print: function () { }
   },
   onPrepare() {
+    // let width = 1024;
+    // let height = 768;
     browser.waitForAngularEnabled(false);
+    browser.driver.manage().window().maximize();
+    // browser.driver.manage().window().setSize(width, height); 
     require('ts-node').register({
       project: 'tsconfig.json'
     });

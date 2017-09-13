@@ -3,7 +3,7 @@ import { promise } from 'selenium-webdriver';
 
 
 export class WatchlistPage {
-    private watchlist = element(by.cssContainingText('.workspace-item--header-item','Watchlists'));
+    private watchlist = element(by.cssContainingText('.workspace-item--header-item', 'Watchlists'));
     private watchlistHeader = $('.watchlists-header');
     private watchlistTitles = $$('.watchlist-header__title');
     private popularMarkets = $('.curated');
@@ -13,15 +13,15 @@ export class WatchlistPage {
     private chevronDownIcons = $$('.icon-chevron-down');
     private trashIcon = $$('.icon-trash-can');
 
-    private addWatchlistLink = $('.add-watchlist__link'); 
+    private addWatchlistLink = $('.add-watchlist__link');
     private watchlistNameInput = $('.add-watchlist__input').$('input[type = "text"]');
     private clearSearchButton = $('.clear-search');
-    
+
     private marketName = $('.market-name');
     private marketNameInput = $('.add-market--search-container').$('input[type = "text"]');
 
-    private marketRename = $('.rename-watchlist');
-    private marketRenameInput = $('input[name = watchlistNewName]');
+    private watchlistRename = $('.rename-watchlist');
+    private watchlistRenameInput = $('input[name = watchlistNewName]');
 
     // Elements
     getWatchlistElement(): ElementFinder {
@@ -42,16 +42,21 @@ export class WatchlistPage {
     }
 
     getWatchlistIds(): promise.Promise<string> {
-        return $$('.watchlist-markets-container--list').getAttribute('watchlistid');        
+        return $$('.watchlist-markets-container--list').getAttribute('watchlistid');
     }
+
+    getTrashIcon(title: string): ElementFinder {
+        return this.getWatchlistByTitle(title).element(by.xpath('following-sibling::div')).$('.icon-trash-can');
+    }
+    
 
     getMarketById(marketId: string): ElementFinder {
         return $(`.[marketid=${marketId}]`);
     }
-    
+
     getMarketNameInput(watchlistId: promise.Promise<string>): ElementFinder {
         let marketNameInputeLocator: ElementFinder;
-        watchlistId.then((id) => { 
+        watchlistId.then((id) => {
             marketNameInputeLocator = $(`.div[watchlistid = ${id}]`).marketNameInput;
         });
 
@@ -67,10 +72,14 @@ export class WatchlistPage {
 
     renameWatchlist(currentName: string, newName: string) {
         this.getWatchlistByTitle(currentName).click().then(() => {
-            this.marketRenameInput.clear();
-            this.marketNameInput.sendKeys(newName);
+            this.watchlistRenameInput.clear();
+            this.watchlistRenameInput.sendKeys(newName);
             browser.actions().sendKeys(protractor.Key.ENTER).perform();
         });
+    }
+
+    deleteWatchlist(name: string) {
+        return this.getTrashIcon(name).click();
     }
 
 }
